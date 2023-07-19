@@ -1,0 +1,42 @@
+body {
+	background-color: #292929;
+	color: white;
+	font-family: Lucida Sans Unicode;
+	margin-left: 2%;
+	margin-right: 1%;
+}
+
+ul>li>a {
+	color: #828282DE;
+}
+
+button {
+	display: inline-block;
+	border-radius: 10px;
+	color: #eeeeee;
+	text-align: center;
+	transition: all 0.5s;
+	cursor: pointer;
+	background-color: #292929;
+	font-family: Lucida Sans Unicode;
+}
+
+ul {
+	list-style-type: none;
+	background-color: #121212;
+}
+
+#vid_st {
+    display: flex;
+  }
+
+@media screen and (max-width: 820px) {
+	body{
+		font-size : 2em;
+	}
+
+	nav {
+		display: inline;
+	}
+}
+

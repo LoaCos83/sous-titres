@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Projet Webdev ISEN - Groupe Pull</title>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/btn_sous_titres.css" />
+		<link rel="stylesheet" href="css/btn_video.css" />
+		<link rel="stylesheet" href="css/div_video.css" />
+		<link rel="stylesheet" href="css/timeline.css" />
+		<link rel="stylesheet" href="css/list_videos.css" />
+		<link rel="stylesheet" href="css/ecriture.css" />
+		<script src="https://unpkg.com/vue@next"></script>
+		<script src="js/ecriture.js"></script>
+		<script src="js/btn_video.js"></script>
+		<script src="js/btn_sous_titres.js"></script>
+		<script src="js/div_video.js"></script>
+		<script src="js/timeline.js"></script>
+		<script src="js/list_videos.js"></script>
+		<script src="js/script.js"></script>
+	</head>
+
+
+	<body>
+		<header>
+			<p>Projet Webdev ISEN</p>
+			<h1>Groupe Pull</h1>
+			<hr>
+		</header>
+		<!--Liste des videos -->
+		<div>
+			<nav>
+				<a class="center">
+					Videos :
+				</a>
+				<ul id="row">
+					<li v-for="(v,i) in video_links">
+						<a v-bind:href="v.lien_click" @mouseover="playVideoLien(i);" @mouseleave="pauseVideoLien(i);">
+							<video ref="players_link" muted loop class="videos_lien">
+								<source v-bind:src="v.lien_video" type="video/mp4">
+							</video>
+							<img class="select" src="rsc/images/select.png" v-if="v.lien_video===current_video">
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+		
+		
+		
+		<div id="row2">
+			<!--Video -->
+			<video id="video" ref="player" v-bind:controls="current_video.length" @timeupdate="timeupdate()"
+				@loadedmetadata="loadedMetadata();">
+				<source v-bind:src="current_video" type="video/mp4">
+			</video>
+			<!--Informations -->
+			<div id="informations">
+				Informations
+				<ul>
+					<li>
+						<a>Fichier</a> </br>
+						{{current_video}}
+					</li>
+					</br>
+					<li>
+						<a>Dur&eacute;e </a></br>
+						{{parseInt(max/60)}}:
+						{{parseInt(max%60)}}
+					</li>
+					</br>
+					<li>
+						<a>Actuel</a> </br>
+						{{parseInt(new Date(player.currentTime).getTime()/60)}}:
+						{{new Date(player.currentTime).getTime()%60}}
+						(
+						{{parseInt(max/60)-parseInt(new Date(player.currentTime).getTime()/60)}}:
+						{{parseInt(max%60)-new Date(player.currentTime).getTime()%60}}
+						)
+					</li>
+					</br>
+					<li>
+						<a>Sous titre</a> </br>
+						{{current_subtrack}}
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		
+		<div id="vid_st">
+			<!--Boutons pour la video -->
+			<div id="btn_video">
+				Video
+				<ul>
+					<li>
+						<button @click="playVideo()">
+							<img src="rsc/images/play1.png" alt="icone play">
+						</button>
+					</li>
+					<li>
+						<button @click="precST();" v-bind:disabled="current_marker.id!=null && current_marker.id <= 0">
+							<img src="rsc/images/returnvid1.png" alt="icone play">
+						</button>
+					</li>
+					<li>
+						<button @click="nextST();"
+							v-bind:disabled="current_marker.id!=null && current_marker.id+1 >= sous_titres.length">
+							<img src="rsc/images/avancevid1.png" alt="icone play">
+						</button>
+					</li>
+					<li>
+						<button @click="retourVersLePasse()">
+							<img src="rsc/images/retour10s1.png" alt="icone play">
+						</button>
+					</li>
+					<li>
+						<button @click="retourVersLeFutur()">
+							<img src="rsc/images/avance10s1.png" alt="icone play">
+						</button>
+					</li>
+					<li>
+						<button @click="stopVideo()">
+							<img src="rsc/images/stop1.png" alt="icone play">
+						</button>
+					</li>
+					<li>
+						<button @click="pauseVideo()">
+							<img src="rsc/images/pause1.png" alt="icone pause">
+						</button>
+					</li>
+				</ul>
+			</div>
+			
+			<!--Sous-titres -->
+			<div id="st" v-if="current_video">
+				Sous-titres
+				<ul id="btn_sous-titres">
+					<li>
+						<label @click="clickCharger();">
+							<img src="rsc/images/charger_24px.png" alt="icone chargement">
+							Charger
+						</label>
+					</li>
+					<li>
+						<label @click="clickAppliquer();">
+							<img src="rsc/images/apply.png" alt="icone appliquer">
+							appliquer
+						</label>
+					</li>
+					<li>
+						<label @click="clickTelecharger();">
+							<img src="rsc/images/save_24px.png" alt="icone sauvegarder">
+							sauvegarder
+						</label>
+					</li>
+					<br>
+				</ul>
+			</div>
+		</div>
+		
+		<textarea v-model="txt_st" v-bind:hidden="input_st"></textarea>
+		
+		<!--Écriture -->
+		Ecriture
+		<div id="ecriture" v-if="current_video">
+			
+			<form action="javascript:void(0);">
+				<div class="scroll">
+					<table>
+						<tr>
+							<th>Time</th>
+							<th>Dur&eacute;e</th>
+							<th>Texte</th>
+						</tr>
+						<tr v-for="(ligne,i) in sous_titres" v-bind:class="ligne.brille">
+							<td v-if="!ligne.modifier">{{ligne.time}}</td>
+							<td v-if="!ligne.modifier"> {{ ligne.duration }} </td>
+							<td v-if="!ligne.modifier">{{ligne.texte}}</td>
+							<td v-if="!ligne.modifier"><button @click="clickMod(i);" v-bind:disabled="!input_st" type="button">modifier</button></td>
+							<td v-if="ligne.modifier"><input v-model="ligne.time" type="time" step="1"></td>
+							<td v-if="ligne.modifier"><input v-model="ligne.duration" type="number" min="1"></td>
+							<td v-if="ligne.modifier"><input v-model="ligne.texte" type="text"></td>
+							<td v-if="ligne.modifier"><button @click="clickOk(i);" type="submit">OK</button></td>
+							<td v-if="ligne.modifier"><button @click="clickSuppr(i);">-</button></td>
+						</tr>
+					</table>
+				</div>
+				<hr>
+				<div id="inputs_new_line">
+					<input class="tab" v-model="input_time" type="time" step="1" required>
+					<input class="tab" v-model="input_duration" type="number" min="1" required>
+					<input class="tab2" v-model="input_texte" type="text" required>
+					<button id="butplu" @click="addNewLigneDeSousTitle()" type="submit"><img src="rsc/images/bouton_plus1.png"></button>
+				</div>
+			</form>
+		</div>
+		
+		
+		<!--Timeline -->
+		<div v-if="current_video">
+			Timeline
+			<div id="timeline">
+			
+				<form action="javascript:void(0);">
+					<div id="div-markers">
+						<div v-for="(marker,i) in sous_titres" ref="markers" v-bind:data-time="marker.time">
+							<img @load="markerLoad(i)" @click="markerClick(i)" v-bind:class="sous_titres[i].brille" src="rsc/images/position.png">
+						</div>
+					</div>
+					<input v-model="player.currentTime" type="range" v-bind:min="min" v-bind:max="max" @change="changeTemps()">
+				</form>
+				
+				<div id="marqueur">
+					<div id="range">
+						<table>
+							<tr>
+								<th>{{current_marker.time}}</th>
+								<th>{{current_marker.duration}}</th>
+								<th>{{current_marker.texte}}</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</body>
+
+</html>

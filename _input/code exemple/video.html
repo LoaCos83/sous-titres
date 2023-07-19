@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<style>
+body{
+	background-color:#F1F1F1;
+}
+
+input{
+	background-color:blue;
+	color:white;
+}
+
+.menu{
+	color:black;
+	font-size:16px;
+	background-color:gray;
+	width:30%;
+	float:left;
+	text-align:center;
+
+	border:1px solid black;
+	padding:2px;
+	margin:5px;
+}
+
+
+</style>
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<body>
+
+
+<h1>The video element</h1>
+<span class="material-icons">manage_accounts</span>
+<video width="640" height="480" id="myvideo" controls ontimeupdate="onTimeUpdate(event)" >
+  <source src="video/ed_hd_512kb.mp4" type="video/mp4">
+  <track default id="subtrack" kind="subtitles" srclang="fr" label="Anglais">
+    Your browser does not support the video tag.
+</video>
+<div id="current_time">TIME</div>
+
+<input type="button" value="<< 500ms" name="btrewind" id="btrewind">
+<input type="button" value="stop" name="btstop" id="btstop">
+<input type="button" value="play" name="btplay" id="btplay">
+<input type="button" value=">> 500ms " name="btforward" id="btforward">
+
+<div>
+<label for="subtitles"></label>
+
+<textarea id="subtitles" name="subtitles" rows="20" cols="50">
+WEBVTT
+
+00:01.000 --> 00:04.000
+Ne jamais boire de l'azote liquide.
+
+00:05.000 --> 00:09.000
+- Cela peut perforer l'estomac.
+- On peut en mourir.
+</textarea>
+</div>
+<div>
+<input type="button" value="Save" name="btsave" id="btsave">
+<a href="#" id="lnkdownload">download </a>
+</div>
+<div>
+
+</div>
+<script language="Javascript">
+
+let videos = [
+	{
+		name:"", // à compléter
+		url:"video/BigBuckBunny_512kb.mp4",
+		duration:"", // à compléter
+		format:"MP4"
+	},
+	{
+		name:"",// à compléter
+		url:"video/Python_512kb.mp4",
+		duration:"",// à compléter
+		format:"MP4"
+	},
+	{
+		name:"",// à compléter
+		url:"video/ed_hd_512kb.mp4",
+		duration:"",// à compléter
+		format:"MP4"
+	},
+]
+
+
+
+let current_time_display = document.getElementById("current_time");
+let myvideo = document.getElementById("myvideo");
+let btplay = document.getElementById("btplay")
+let btstop = document.getElementById("btstop")
+let subtrack = document.getElementById("subtrack")
+
+let btrewind = document.getElementById("btrewind")
+let btforward = document.getElementById("btforward")
+
+let btsave = document.getElementById("btsave")
+
+let subtitles = document.getElementById("subtitles")
+
+window.onTimeUpdate = (e) => {
+
+	let current_time = new Date(Math.round(e.target.currentTime * 1000))
+	current_time.setHours(current_time.getHours() -1)
+	current_time_display.innerHTML = current_time.toLocaleTimeString("fr-FR") + " " +current_time.getMilliseconds()
+    
+};
+
+btplay.onclick = (e) => {
+	myvideo.play()
+}
+
+btstop.onclick = (e) => {
+	myvideo.pause()	
+}
+
+btforward.onclick = (e) => {
+	myvideo.currentTime = (myvideo.currentTime*1000 + 500)/1000;
+}
+
+btrewind.onclick = (e) => {
+	myvideo.currentTime = (myvideo.currentTime*1000 - 500)/1000;
+}
+
+btsave.onclick = (e) => {
+	makeLink (subtitles.value)
+}
+</script>
+<script language="Javascript"src="script.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+#btn-video {
+    background-color: #121212;
+}
+
+#btn-video ul{
+	display : flex;
+}
+
+#btn_video li {
+    display: inline-block;
+}
+
+#btn_video button {
+    border-radius: 5px;
+    background-color: #2F2638;
+    border: 7px double #2F2638;
+    padding: 6px 12px;
+    transition: all 0.5s;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin: 10px;
+}
+
+#btn_video button:hover {
+    border: 7px double #bb87fd;
+}
+
+@media screen and (max-width: 960px) {
+	#btn-video {
+		display : block;
+		height : auto;
+	}
+	
+	#btn_video li {
+		display: inline;
+	}
+}

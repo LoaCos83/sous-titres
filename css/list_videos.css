@@ -1,0 +1,51 @@
+nav>ul {
+    background-color: transparent;
+    width: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 5px 0px 0px 0px;
+	height : 10%;
+}
+
+nav>ul>li {
+    width: auto;
+    height: 50%;
+}
+
+nav {
+    display: flex;
+}
+
+nav>p {
+    font-size: 1.8em;
+    width: auto;
+    margin-right: 4%;
+}
+
+.center {
+    display: flex;
+    align-items: center;
+}
+
+#row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.videos_lien {
+    width: auto;
+    height: 90%;
+    margin: auto 10px auto 10px;
+}
+
+.videos_lien:hover {
+    border-style: solid;
+    border-width: medium;
+    border-color: #7b38d8;
+}
+
+.select {
+    margin-left: -15%;
+    margin-bottom: 35%;
+}

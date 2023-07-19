@@ -1,0 +1,44 @@
+#row2 {
+    display: flex;
+    flex-direction: row;
+	width : auto;
+	padding : 1%;
+}
+
+#video {
+    margin: auto;
+    width: auto;
+	width : 50%;
+    height: auto;
+}
+
+#informations {
+    width: auto;
+	height : 100%;
+	margin: auto;
+}
+
+#informations ul {
+	height : min-content;
+    background: #121212 0% 0% no-repeat padding-box;
+    border: 1px solid #707070;
+    border-radius: 16px;
+    opacity: 1;
+    width: fit-content;
+    list-style-type: none;
+}
+
+@media screen and (max-width: 820px) {
+
+	#video {
+		width: 100%;
+		height: auto;
+	}
+  
+	#row2 {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+  }
+
+}
